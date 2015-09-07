@@ -1,0 +1,5 @@
+#!@BINDIR@/execlineb -P
+if { aa-mount -M /run /root-fs/run }
+if { aa-mount -M /sys /root-fs/sys }
+if { aa-mount -M /proc /root-fs/proc }
+if { aa-mount -M /dev /root-fs/dev }

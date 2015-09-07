@@ -1,0 +1,17 @@
+#!@BINDIR@/execlineb -P
+aa-service
+s6-envdir /etc/mount/${INSTANCE}
+import -u device
+if { aa-test -eR300 ${device} }
+emptyenv -c
+foreground { fsck -aC3 ${device} }
+import -u ?
+# 0 and 1 are ok
+if -t { test $? -gt 1 }
+ifelse { test $? -eq 2 }
+{
+  ifelse { test -e autoreboot } { aa-reboot -r }
+  if { aa-echo -e "Errors corrected, but system should be rebooted" }
+  exit 2
+}
+exit $?

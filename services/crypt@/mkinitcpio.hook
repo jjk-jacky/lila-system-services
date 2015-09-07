@@ -1,0 +1,13 @@
+hook_service() {
+    add_binary /bin/aa-service
+    add_binary /bin/aa-test
+    add_binary /bin/ifte
+    add_binary /bin/ifelse
+    add_binary /bin/fdswap
+    add_binary /bin/cryptsetup
+    add_module dm-crypt
+    add_all_modules "/crypto/"
+}
+hook_instance() {
+    add_full_dir /etc/crypt/"$1"
+}

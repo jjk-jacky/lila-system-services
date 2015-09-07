@@ -1,0 +1,6 @@
+#!@BINDIR@/execlineb -P
+aa-service
+if { aa-test -r /etc/network/shared-interface }
+backtick -n INTERFACE { cat /etc/network/shared-interface }
+import -iu INTERFACE
+if { iptables -A FORWARD -i ${INSTANCE} -o ${INTERFACE} -j ACCEPT }

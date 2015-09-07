@@ -1,0 +1,9 @@
+#!@BINDIR@/execlineb -P
+if { mkdir /run/lock }
+if { ln -s /proc/self/fd /dev/fd }
+if { ln -s fd/0 /dev/stdin }
+if { ln -s fd/1 /dev/stdout }
+if { ln -s fd/2 /dev/stderr }
+foreground { if { test -e /proc/kcore } ln -s /proc/kcore /dev/core }
+if { mkdir /dev/net }
+if { mknod --mode=0666 /dev/net/tun c 10 200 }

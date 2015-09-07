@@ -1,0 +1,39 @@
+#!@BINDIR@/sh
+
+KEYMAP="us"
+KEYMAP_TOGGLE=""
+FONT=""
+FONT_MAP=""
+FONT_UNIMAP=""
+
+[ -r /etc/vconsole.conf ] && . /etc/vconsole.conf
+
+[ -r /etc/locale.conf ] && . /etc/locale.conf
+export LANG="$LANG"
+
+if [ $(locale charmap) = "UTF-8" ]; then
+    is_utf8=1
+    echo -ne '\033%G' > /dev/console
+    echo -n 1 > /sys/module/vt/parameters/default_utf8
+    kbd_mode -u -C /dev/console
+else
+    is_utf8=0
+    echo -ne '\033%@' > /dev/console
+    echo -n 0 > /sys/module/vt/parameters/default_utf8
+    kbd_mode -a -C /dev/console
+fi
+
+if [ -n "$FONT" ]; then
+    PARAMS="-C /dev/console $FONT"
+    [ -n "$FONT_MAP" ] && PARAMS+=" -m $FONT_MAP"
+    [ -n "$FONT_UNIMAP" ] && PARAMS+=" -m $FONT_UNIMAP"
+    setfont $PARAMS
+fi
+
+if [ -n "$KEYMAP" ]; then
+    PARAMS="-C /dev/console $KEYMAP"
+    [ $is_utf8 -eq 1 ] && PARAMS+=" -u"
+    [ -n "$KEYMAP_TOGGLE" ] && PARAMS+=" $KEYMAP_TOGGLE"
+    loadkeys $PARAMS
+fi
+

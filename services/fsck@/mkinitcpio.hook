@@ -1,0 +1,19 @@
+hook_service() {
+    add_binary /bin/aa-service
+    add_binary /bin/aa-test
+    add_binary /bin/ifelse
+    add_binary /bin/fsck
+    add_binary /bin/exit
+}
+hook_instance() {
+    local fstype
+
+    add_full_dir /etc/mount/"$1"
+
+    fstype=$(head -1 /etc/mount/"$1"/fstype)
+    if [[ ! -x /bin/fsck.$fstype ]]; then
+        aa-echo -e "No fsck binary for $fstype"
+        return 1
+    fi
+    add_binary /bin/fsck.$fstype
+}

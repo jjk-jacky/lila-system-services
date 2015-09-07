@@ -1,0 +1,73 @@
+#!/bin/sh
+
+usage() {
+    cat <<EOF
+usage: ./configure [OPTION...]
+
+Defaults are in brackets.
+
+ --prefix=PREFIX                Use PREFIX as main prefix [/]
+ --bindir=DIR                   Use DIR as path in scripts shebang [PREFIX/bin]
+ --libdir=DIR                   Use DIR as path to install to [PREFIX/lib]
+EOF
+    exit $1
+}
+
+prefix=/
+bindir=
+libdir=
+
+cmdline="$0 $@"
+while [ $# -ge 1 ]; do
+    opt=${1%%=*}
+    val=${1#*=}
+    case "$opt" in
+        "--prefix")
+            prefix="$val"
+            ;;
+        "--bindir")
+            bindir="$val"
+            ;;
+        "--libdir")
+            libdir="$val"
+            ;;
+        "-h"|"--help")
+            usage 0
+            ;;
+        *)
+            echo "invalid option: $opt"
+            usage 1
+            ;;
+    esac
+    shift
+done
+
+l=${#prefix}
+l=$(($l-1))
+if [ "${prefix:$l}" = "/" ]; then
+    prefix=${prefix:0:$l}
+fi
+
+if [ -z "$bindir" ]; then
+    bindir="$prefix/bin"
+fi
+
+if [ -z "$libdir" ]; then
+    libdir="$prefix/lib"
+fi
+
+exec 4>&1 1>config.mak
+cat <<EOF
+# This file was generated with: $cmdline
+# Do not edit manually.
+
+bindir := $bindir
+libdir := $libdir
+EOF
+exec 1>&4 4<&-
+
+cat <<EOF
+    Binary path to use in shebang:      $bindir
+    Install servicedirs to:             $libdir/services
+    Install mkinitcpio hooks to:        $libdir/initcpio/install
+EOF

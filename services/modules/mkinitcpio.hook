@@ -1,0 +1,4 @@
+hook_service() {
+    add_binary /bin/pipeline
+    add_binary /bin/forstdin
+}

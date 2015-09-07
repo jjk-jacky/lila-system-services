@@ -1,0 +1,19 @@
+hook_service() {
+    (
+        for file in /etc/{vconsole,locale}.conf; do
+            [[ -r "$file" ]] && . "$file"
+        done
+        if [[ -n $KEYMAP ]]; then
+            PARAMS="-q -b"
+            if [[ $LANG = *[Uu][Tt][Ff]?(-)8 ]]; then
+                touch "$BUILDROOT"/keymap.utf8
+                PARAMS+=" -u"
+            fi
+            loadkeys $PARAMS "$KEYMAP" > "$BUILDROOT"/keymap.bin
+        else
+            aa-echo -e "no KEYMAP specified in /etc/vconsole.conf"
+            return 1
+        fi
+    )
+    add_binary /bin/ifthenelse
+}

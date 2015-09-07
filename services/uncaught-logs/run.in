@@ -1,0 +1,6 @@
+#!@BINDIR@/execlineb -P
+redirfd -w 2 /dev/console
+redirfd -rnb 0 fifo
+s6-setuidgid log
+exec -c
+s6-log -b t /var/log/uncaught-logs

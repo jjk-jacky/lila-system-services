@@ -1,0 +1,7 @@
+hook_service() {
+    add_binary /bin/aa-service
+    add_binary /bin/aa-umount
+}
+hook_instance() {
+    add_full_dir /etc/mount/"$1"
+}

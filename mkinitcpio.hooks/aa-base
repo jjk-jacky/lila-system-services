@@ -1,0 +1,47 @@
+#!/bin/bash
+
+build() {
+    add_file /usr/lib/anopa/aa-stage0 /init
+    add_file /usr/lib/anopa/aa-stage4 /shutdown
+
+    add_full_dir /etc/anopa/env
+
+    add_binary /usr/bin/aa-echo /bin/aa-echo
+    add_binary /usr/bin/aa-start /bin/aa-start
+    add_binary /usr/bin/aa-stop /bin/aa-stop
+    add_binary /usr/bin/aa-reset /bin/aa-reset
+    add_binary /usr/bin/aa-incmdline /bin/aa-incmdline
+    add_binary /usr/bin/aa-mount /bin/aa-mount
+    add_binary /usr/bin/aa-chroot /bin/aa-chroot
+    add_binary /usr/bin/aa-terminate /bin/aa-terminate
+    add_binary /usr/bin/aa-reboot /bin/aa-reboot
+    add_binary /usr/bin/aa-ctty /bin/aa-ctty
+
+    add_binary /usr/bin/execlineb /bin/execlineb
+    add_binary /usr/bin/emptyenv /bin/emptyenv
+    add_binary /usr/bin/s6-envdir /bin/s6-envdir
+    add_binary /usr/bin/exec /bin/exec
+    add_binary /usr/bin/piperw /bin/piperw
+    add_binary /usr/bin/background /bin/background
+    add_binary /usr/bin/fdclose /bin/fdclose
+    add_binary /usr/bin/redirfd /bin/redirfd
+    add_binary /usr/bin/fdmove /bin/fdmove
+    add_binary /usr/bin/s6-tai64n /bin/s6-tai64n
+    add_binary /usr/bin/foreground /bin/foreground
+    add_binary /usr/bin/cd /bin/cd
+    add_binary /usr/bin/umask /bin/umask
+    add_binary /usr/bin/if /bin/if
+    add_binary /usr/bin/backtick /bin/backtick
+    add_binary /usr/bin/withstdinas /bin/withstdinas
+    add_binary /usr/bin/import /bin/import
+    add_binary /usr/bin/s6-setsid /bin/s6-setsid
+}
+
+help() {
+    cat <<HELPEOF
+This hook provides crucial runtime necessities for booting. DO NOT
+remove this hook unless you know what you're doing.
+HELPEOF
+}
+
+# vim: set ft=sh ts=4 sw=4 et:

@@ -1,0 +1,41 @@
+#!@BINDIR@/execlineb -P
+aa-service
+s6-envdir /etc/crypt/${INSTANCE}
+import -iu device
+if { aa-test -eR ${device} }
+# default to luks
+import -u -D luks type
+# set a default name if none specified
+backtick -n name { ifte
+  { cat /etc/crypt/${INSTANCE}/name }
+  { echo ${type}-${INSTANCE} }
+  aa-test -r /etc/crypt/${INSTANCE}/name
+}
+import -u name
+# if offset specified, load it w/ the option; else nothing
+backtick -n offset { ifte
+  { import offset echo --offset ${offset} }
+  { echo }
+  aa-test -r /etc/crypt/${INSTANCE}/offset
+}
+# the 's' will either split '--offset' and the offset value, or make ${offset}
+# be nothing (and not empty word)
+import -us offset
+# if there's a keyfile, go for it
+ifelse { aa-test -r /etc/crypt/${INSTANCE}/keyfile }
+{
+  import -iu keyfile
+  cryptsetup open --type ${type} ${device} ${name} --key-file ${keyfile} ${offset}
+}
+# else perform password input
+fdswap 1 3
+if { aa-echo -n "< Enter passphrase for ${name}" }
+fdswap 1 3
+foreground { cryptsetup open --type ${type} --tries 1 ${device} ${name} ${offset} }
+import -u ?
+ifelse { test $? -ne 2 } { exit $? }
+# 2 == no permission (bad passphrase)
+fdswap 1 3
+if { aa-echo -n "< [last try] Enter passphrase for ${name}" }
+fdswap 1 3
+cryptsetup open --type ${type} --tries 1 ${device} ${name} ${offset}

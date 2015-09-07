@@ -1,0 +1,11 @@
+#!@BINDIR@/execlineb -P
+ifthenelse -X { test -f /keymap.utf8 }
+{
+  foreground { redirfd -w 1 /dev/console echo -ne "\033%G" }
+  kbd_mode -u -C /dev/console
+}
+{
+  foreground { redirfd -w 1 /dev/console echo -ne "\033%@" }
+  kbd_mode -a -C /dev/console
+}
+redirfd -r 0 /keymap.bin loadkmap

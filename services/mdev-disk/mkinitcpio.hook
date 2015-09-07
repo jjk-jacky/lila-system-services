@@ -1,0 +1,8 @@
+hook_service() {
+    add_binary /bin/pipeline
+    add_binary /bin/forstdin
+    add_binary /bin/export
+    add_file /lib/lila-mdev/mdev-disk /bin/mdev-disk
+    add_binary /bin/blkid
+    add_binary /bin/sed
+}

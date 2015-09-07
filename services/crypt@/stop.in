@@ -1,0 +1,10 @@
+#!@BINDIR@/execlineb -P
+aa-service
+import -u -D luks type
+backtick -n name { ifte
+  { cat /etc/crypt/${INSTANCE}/name }
+  { echo ${type}-${INSTANCE} }
+  aa-test -r /etc/crypt/${INSTANCE}/name
+}
+import -u name
+cryptsetup close ${name}

@@ -1,0 +1,16 @@
+#!@BINDIR@/execlineb -P
+
+backtick -n CLOCK { ifte
+    { echo --localtime }
+    { echo --utc }
+    redirfd -w 1 /dev/null fdmove -c 2 1 stat /etc/hwclock-is-localtime
+}
+
+backtick -n TZ { foreground { piperw 3 4 ifte
+    { fdclose 4 fdmove 0 3 cut -c21- }
+    { fdclose 3 fdclose 4 echo UTC }
+    fdmove -c 1 4 redirfd -w 2 /dev/null readlink /etc/localtime }
+}
+
+import -u CLOCK
+hwclock --systz $CLOCK --noadjfile

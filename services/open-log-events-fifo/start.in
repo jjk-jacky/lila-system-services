@@ -1,0 +1,3 @@
+#!@BINDIR@/execlineb -P
+redirfd -nb -r 0 /run/services/log-events/fifo
+s6-fdholder-store /run/services/fdholdingd/socket log-events

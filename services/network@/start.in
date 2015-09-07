@@ -1,0 +1,14 @@
+#!@BINDIR@/execlineb -P
+aa-service
+s6-envdir /etc/network/${INSTANCE}
+import -u -D ${INSTANCE} device
+if { aa-test -eR /sys/class/net/${device} }
+import -iu address
+import -iu block
+if { ip link set dev ${device} up }
+if { ip addr add ${address}/${block} dev ${device} }
+ifelse { aa-test -r /etc/network/${INSTANCE}/gateway }
+{
+  import -iu gateway
+  if { ip route add default via ${gateway} }
+}

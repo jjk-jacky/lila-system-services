@@ -1,0 +1,11 @@
+#!@BINDIR@/execlineb -P
+redirfd -w 1 /run/services/log-events/fifo
+s6-setuidgid log
+exec -c
+s6-log 
+- +"^[0-9]+: [0-9]+: authpriv\." t /var/log/syslog/auth
+- +"^[0-9]+: [0-9]+: daemon\." t /var/log/syslog/daemon
+- +"^[0-9]+: [0-9]+: error\." t /var/log/syslog/error p"syslogd: error: " 1
+- +"^[0-9]+: [0-9]+: messages\." t /var/log/syslog/messages
+- +"^[0-9]+: [0-9]+: user\." t /var/log/syslog/user
+- f t /var/log/syslog/misc

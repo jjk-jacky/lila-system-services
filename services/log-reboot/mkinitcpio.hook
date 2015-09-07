@@ -1,0 +1,3 @@
+hook_service() {
+    add_binary /bin/pipeline
+}

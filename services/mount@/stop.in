@@ -1,0 +1,7 @@
+#!@BINDIR@/execlineb -P
+aa-service
+s6-envdir /etc/mount/${INSTANCE}
+import -ui mountpoint
+if -nt { aa-umount ${mountpoint} }
+if { aa-echo -n "Trying lazy umount..." }
+aa-umount -l ${mountpoint}

@@ -1,0 +1,59 @@
+#!/bin/bash
+
+build() {
+    local -A done
+
+    aa-enable -r "$BUILDROOT/services" -l /etc/anopa/initramfs/enabled
+    add_full_dir /etc/anopa/initramfs/onboot
+    mv "$BUILDROOT"/etc/anopa/{initramfs,listdirs}
+
+    aa-echo -B "Running service hooks..."
+    for service_dir in "$BUILDROOT"/services/*; do
+        [[ ! -d "$service_dir" ]] && continue
+        [[ ${service_dir:0:1} = "." ]] && continue
+        service=${service_dir##*/}
+
+        if [[ ! -f "$service_dir"/mkinitcpio.hook ]]; then
+            aa-echo -w "$service has no hookfile"
+            continue
+        fi
+        [[ ! -s "$service_dir"/mkinitcpio.hook ]] && continue
+
+        unset -f aa_service
+        if ! . "$service_dir"/mkinitcpio.hook; then
+            aa-echo -e "Failed to read $service/mkinitcpio.hook"
+            return 1
+        fi
+
+        if ! declare -f hook_service > /dev/null; then
+            aa-echo -e "$service: No hook_service function in hookfile"
+        fi
+        if [[ $service == *@* ]]; then
+            serv=${service%%@*}
+            inst=${service#*@}
+
+            if ! declare -f hook_service > /dev/null; then
+                aa-echo -e "$service: No hook_service function in hookfile"
+            fi
+            if [[ ! ${done["$serv"]} -eq 1 ]]; then
+                aa-echo -t "Running service hook for $serv@..."
+                hook_service
+                done["$serv"]=1
+            fi
+            aa-echo -t "Running instance hook for $service..."
+            hook_instance "$inst"
+        else
+            aa-echo -t "Running service hook for $service..."
+            hook_service
+        fi
+    done
+}
+
+help() {
+    cat <<HELPEOF
+This hook provides crucial runtime necessities for booting. DO NOT
+remove this hook unless you know what you're doing.
+HELPEOF
+}
+
+# vim: set ft=sh ts=4 sw=4 et:

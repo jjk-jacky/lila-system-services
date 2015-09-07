@@ -1,0 +1,19 @@
+#!@BINDIR@/execlineb -P
+# file to store the random seed
+backtick -n file { ifte
+  { cat file }
+  { echo /var/tmp/random-seed }
+  aa-test -r file
+}
+import -u file
+# get poolsize from kernel
+backtick -n size { ifte
+  { cat /proc/sys/kernel/random/poolsize }
+  { echo 512 }
+  aa-test -r /proc/sys/kernel/random/poolsize
+}
+import -u size
+# reset file
+foreground { if { touch ${file} } chmod 600 ${file} }
+# update seed
+dd if=/dev/urandom of=${file} bs=${size} count=1

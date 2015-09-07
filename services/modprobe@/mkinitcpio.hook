@@ -1,0 +1,6 @@
+hook_service() {
+    add_binary /bin/aa-service
+}
+hook_instance() {
+    add_module "$1"
+}

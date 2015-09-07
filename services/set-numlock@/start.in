@@ -1,0 +1,4 @@
+#!@BINDIR@/execlineb -P
+aa-service
+redirfd -r 0 /dev/${INSTANCE}
+setleds -D +num

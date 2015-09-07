@@ -1,0 +1,8 @@
+#!@BINDIR@/execlineb -P
+foreground {
+  pipeline { pipeline { find /sys -type f -name modalias -exec cat {} + } uniq }
+  forstdin -p m import -u m redirfd -w 2 /dev/null modprobe $m
+}
+if { aa-echo -n "First pass completed." }
+pipeline { pipeline { find /sys -type f -name modalias -exec cat {} + } uniq }
+forstdin -p m import -u m redirfd -w 2 /dev/null modprobe $m

@@ -1,0 +1,7 @@
+#!@BINDIR@/execlineb -P
+if { aa-test -r /etc/network/shared-interface }
+backtick -n INTERFACE { cat /etc/network/shared-interface }
+import -iu INTERFACE
+if { redirfd -w 1 /proc/sys/net/ipv4/ip_forward echo -n 0 }
+if { iptables -t nat -D POSTROUTING -o ${INTERFACE} -j MASQUERADE }
+if { iptables -D FORWARD -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT }

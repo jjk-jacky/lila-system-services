@@ -1,0 +1,5 @@
+#!@BINDIR@/execlineb -P
+fdmove -c 2 1
+s6-fdholder-retrieve /run/services/fdholdingd/socket log-events
+exec -c
+gawk -f script

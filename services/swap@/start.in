@@ -1,0 +1,9 @@
+#!@BINDIR@/execlineb -P
+aa-service
+s6-envdir /etc/swap/${INSTANCE}
+import -iu device
+foreground {
+  if { aa-test -r /etc/swap/${INSTANCE}/mkswap }
+  mkswap ${device}
+}
+swapon ${device}
