@@ -2,10 +2,12 @@
 
 build() {
     local -A done
+    local f=
 
-    aa-enable -r "$BUILDROOT/services" -l /etc/anopa/initramfs/enabled
-    add_full_dir /etc/anopa/initramfs/onboot
-    mv "$BUILDROOT"/etc/anopa/{initramfs,listdirs}
+    [[ -n $AA_NAME ]] && f=".$AA_NAME"
+    aa-enable -r "$BUILDROOT/services" -l /etc/anopa/initramfs$f/enabled
+    add_full_dir /etc/anopa/initramfs$f/onboot
+    mv "$BUILDROOT"/etc/anopa/{initramfs$f,listdirs}
 
     aa-echo -B "Running service hooks..."
     for service_dir in "$BUILDROOT"/services/*; do
