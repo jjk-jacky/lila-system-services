@@ -1,4 +1,8 @@
 #!@BINDIR@/execlineb -P
 backtick -n ts { pipeline { head -1 /boot.log } cut -d\  -f1 }
 import -u ts
+foreground {
+    if { touch /root-fs/var/log/boot/${ts} }
+    foreground { ln -sf ${ts} /root-fs/var/log/boot/current }
+}
 find /root-fs/var/log -type f -name current -exec redirfd -a 1 {} echo ${ts} --- Reboot --- \;
