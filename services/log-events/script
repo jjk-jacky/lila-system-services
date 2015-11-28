@@ -20,4 +20,6 @@
   gsub (/'/, "'\\''", _service_name)
   _logline=logline
   gsub (/'/, "'\\''", _logline)
+
+  printf "Event: %s; Service: %s\nLogline: %s\n", event, _service_name, _logline
 }
