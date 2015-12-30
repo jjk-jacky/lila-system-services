@@ -1,0 +1,5 @@
+#!@BINDIR@/execlineb -P
+aa-service
+piperw 3 4
+if { s6-fdholder-store -d 3 /run/services/fdholdingd/socket pipe:${INSTANCE}-r }
+s6-fdholder-store -d 4 /run/services/fdholdingd/socket pipe:${INSTANCE}-w

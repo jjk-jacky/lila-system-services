@@ -1,1 +1,1 @@
-^log-events$
+^log-events$|pipe:.+-[rw]

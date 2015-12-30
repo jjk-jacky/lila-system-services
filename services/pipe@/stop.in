@@ -1,0 +1,4 @@
+#!@BINDIR@/execlineb -P
+aa-service
+if { s6-fdholder-delete /run/services/fdholdingd/socket pipe:${INSTANCE}-r }
+s6-fdholder-delete /run/services/fdholdingd/socket pipe:${INSTANCE}-w
