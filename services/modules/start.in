@@ -1,4 +1,10 @@
 #!@BINDIR@/execlineb -P
+ifelse -X { if -n { aa-incmdline aafull } aa-test -e /modules }
+{
+  pipeline { cat /modules }
+  forstdin -p m import -u m redirfd -w 2 /dev/null modprobe $m
+}
+# full/slow
 foreground {
   pipeline { pipeline { find /sys -type f -name modalias -exec cat {} + } uniq }
   forstdin -p m import -u m redirfd -w 2 /dev/null modprobe $m

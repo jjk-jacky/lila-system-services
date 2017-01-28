@@ -1,4 +1,7 @@
 hook_service() {
+    [[ -e /etc/anopa/initramfs/modules ]] && \
+        add_file /etc/anopa/initramfs/modules /modules
+    add_binary /bin/ifelse
     add_binary /bin/pipeline
     add_binary /bin/forstdin
 }
