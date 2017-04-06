@@ -33,7 +33,7 @@ build() {
     add_binary /usr/bin/if /bin/if
     add_binary /usr/bin/backtick /bin/backtick
     add_binary /usr/bin/withstdinas /bin/withstdinas
-    add_binary /usr/bin/import /bin/import
+    add_binary /usr/bin/importas /bin/importas
     add_binary /usr/bin/s6-setsid /bin/s6-setsid
 }
 

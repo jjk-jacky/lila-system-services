@@ -1,6 +1,6 @@
 #!@BINDIR@/execlineb -P
 aa-service
 s6-envdir /etc/network/${INSTANCE}
-import -u -D ${INSTANCE} device
+importas -u -D ${INSTANCE} device device
 if { ip addr flush dev ${device} }
 if { ip link set dev ${device} down }

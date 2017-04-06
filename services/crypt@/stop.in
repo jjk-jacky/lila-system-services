@@ -1,10 +1,10 @@
 #!@BINDIR@/execlineb -P
 aa-service
-import -u -D luks type
+importas -u -D luks type type
 backtick -n name { ifte
   { cat /etc/crypt/${INSTANCE}/name }
   { echo ${type}-${INSTANCE} }
   aa-test -r /etc/crypt/${INSTANCE}/name
 }
-import -u name
+importas -u name name
 cryptsetup close ${name}

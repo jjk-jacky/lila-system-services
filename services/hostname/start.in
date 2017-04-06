@@ -1,5 +1,5 @@
 #!@BINDIR@/execlineb -P
 backtick -D localhost -n HOSTNAME { redirfd -w 2 /dev/null cat /etc/hostname }
-import -u HOSTNAME
+importas -u HOSTNAME HOSTNAME
 redirfd -w 1 /proc/sys/kernel/hostname
 echo -n $HOSTNAME

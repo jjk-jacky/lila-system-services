@@ -12,5 +12,5 @@ backtick -n TZ { foreground { piperw 3 4 ifte
     fdmove -c 1 4 redirfd -w 2 /dev/null readlink /etc/localtime }
 }
 
-import -u CLOCK
+importas -u CLOCK CLOCK
 hwclock --systz $CLOCK --noadjfile

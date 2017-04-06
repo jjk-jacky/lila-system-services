@@ -1,12 +1,12 @@
 #!@BINDIR@/execlineb -P
 aa-service
 elglob -s dirs /etc/tweaks/${INSTANCE}/*
-forx -p dir { ${dirs} } import -u dir
+forx -p dir { ${dirs} } importas -u dir dir
 foreground {
   backtick -n name { pipeline { echo ${dir} } sed s/.\\+\\/// }
-  import -u name echo * Applying ${name} ...
+  importas -u name name echo * Applying ${name} ...
 }
 backtick -in file { cat ${dir}/file }
-import -u file
+importas -u file file
 redirfd -w 1 ${file}
 cat ${dir}/value

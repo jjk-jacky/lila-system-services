@@ -1,8 +1,8 @@
 #!@BINDIR@/execlineb -P
 aa-service
 s6-envdir /etc/mount/${INSTANCE}
-import -ui fstype
-import -uD rw options
-import -ui device
-import -ui mountpoint
+importas -ui fstype fstype
+importas -uD rw options options
+importas -ui device device
+importas -ui mountpoint mountpoint
 aa-mount -dt ${fstype} -o ${options} ${device} ${mountpoint}

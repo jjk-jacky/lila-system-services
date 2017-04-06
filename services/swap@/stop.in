@@ -1,5 +1,5 @@
 #!@BINDIR@/execlineb -P
 aa-service
 s6-envdir /etc/swap/${INSTANCE}
-import -iu device
+importas -iu device device
 swapoff ${device}

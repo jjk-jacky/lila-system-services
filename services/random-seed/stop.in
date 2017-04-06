@@ -5,14 +5,14 @@ backtick -n file { ifte
   { echo /var/tmp/random-seed }
   aa-test -r file
 }
-import -u file
+importas -u file file
 # get poolsize from kernel
 backtick -n size { ifte
   { cat /proc/sys/kernel/random/poolsize }
   { echo 512 }
   aa-test -r /proc/sys/kernel/random/poolsize
 }
-import -u size
+importas -u size size
 # reset file
 foreground { if { touch ${file} } chmod 600 ${file} }
 # update seed

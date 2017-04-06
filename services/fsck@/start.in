@@ -1,11 +1,11 @@
 #!@BINDIR@/execlineb -P
 aa-service
 s6-envdir /etc/mount/${INSTANCE}
-import -u device
+importas -u device device
 if { aa-test -eR300 ${device} }
 emptyenv -c
 foreground { fsck -aC3 ${device} }
-import -u ?
+importas -u ? ?
 # 0 and 1 are ok
 if -t { test $? -gt 1 }
 ifelse { test $? -eq 2 }
